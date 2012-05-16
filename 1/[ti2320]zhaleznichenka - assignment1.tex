@@ -1,15 +1,63 @@
 \documentclass[a4paper, notitlepage]{article}
 \usepackage{fullpage}
-
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{9251}{\openboxtest}
 \begin{document}
 
-\title{TI2320 Theory of Computation, assignment 1} 
+\title{TI2320 Theory of Computation, assignment 1 (tm-n-22)} 
 \author{Zmitser Zhaleznichenka (4134575)}
 \date{\today}
 \maketitle
 
 \setcounter{secnumdepth}{0}
 
+\section{High-level description}
 
+To decide on the given language $L$, we need a multi-tape Turing machine with two tapes having tape alphabet $\Gamma = \{0, 1, \#, *, ␣\}$. This Turing machine should operate as follows. 
+
+\begin{enumerate}
+
+\item Scan input for \#. If it is not found, or more than one is found, \emph{reject} (trivial).
+
+\item Copy input from tape 1 to tape 2 (trivial).
+
+\item At tape 1 compare \(\#_0\) and \(\#_1\) in x. To do this, for each 1 twice scan the string for 0 and replace these 0s with *, then replace 1 with *. After reaching \# check whether there are remaining 0s and 1s and \emph{reject} if so, proceed otherwise.
+
+\item At tape 2 compare $x$ and $y^s$. Start from \# and zig-zag from it in both directions comparing the symbols under the head. If at any of the steps the symbols don't match, \emph{reject}. Otherwise, when two matching spaces found, \emph{accept}.
+
+\end{enumerate}
+
+\section{Implementation description}
+
+\subsection{Comparing $\#_0$ and $\#_1$ in x}
+
+\begin{enumerate}
+
+\item Repeat steps 2-5 until you reach \# at any step.
+
+\item Start from the beginning of the string and go from left to right upon reaching first 1.
+
+\item Get back to the beginning and scan the string from left to right for first 0. Replace 0 with *.
+
+\item Repeat steps 1-2 once.
+
+\item Replace leftmost 1 with *.
+
+\item Upon reaching \#, move left from this symbol and scan the string for 0 or 1. If you have found any of them, \emph{reject}. Otherwise, if the beginning of string reached, go to the following part.
+\end{enumerate}
+
+\subsection{Comparing $x$ and $y^s$}
+
+\begin{enumerate}
+
+\item Place the head at \# sign.
+
+\item Move left until reaching any of \{0,1,␣\} and replace it with \#.
+
+\item Move right until reaching first non-\# symbol.
+
+\item If it equals the replaced symbol and both symbols are spaces, \emph{accept}. Otherwise, if the symbols are 0s or 1s, replace the symbol at head with \# and repeat steps 2-4. If symbols differ, \emph{reject}.
+
+\end{enumerate}
 
 \end{document}

@@ -1,0 +1,60 @@
+\documentclass[a4paper, notitlepage]{article}
+\usepackage{fullpage}
+\usepackage{tikz}
+\usepackage{amsfonts}
+\begin{document}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\title{TI2320 Theory of Computation, assignment 3 (diag-6)} 
+\author{Zmitser Zhaleznichenka (\#4134575, group 39)}
+\date{\today}
+\maketitle
+
+\setcounter{secnumdepth}{0}
+
+\textbf{Theorem.} If an arbitrary finite set $V \subset \mathbb{N}$ has at least two elements, then a set $F$ containing all the functions with signature $\mathbb{N} \rightarrow V$ is uncountable.\newline
+
+\textbf{Proof.} Let say that $V$ contains $m$ elements and for simplicity let assume that $V = \{0, 1, ..., m-1\}$. If the elements in $V$ are chosen differently, it does not affect the validity of a proof. 
+
+Assume that set $F$ is countable. This means we can count the functions in $F$: $F_0, F_1, ..., F_n, ...$\ . Every function $F_n$ has a characteristic sequence $f_n : \mathbb{N} \rightarrow \{0, 1, ..., m-1\}$. The $i$th element of $f_n$ is found as $F_n(i)$. These sequences can be written in the table form:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r | l}
+& 0\ 1\ 2\ ... n ... \\
+\hline
+$f_0$ & 0\ 2\ 4 ... 2 ... \\
+$f_1$ & 1\ 1\ 3 ... 3 ... \\
+$f_2$ & 2\ 2\ 1 ... 1 ... \\
+. & . \ . \ . \ . \ . \ . \ \\ 
+. & . \ . \ . \ . \ . \ . \ \\
+. & . \ . \ . \ . \ . \ . \ \\
+$f_n$ & 4\ 1\ 3 ... 0 ... \\
+. & . \ . \ . \ . \ . \ . \ \\
+\end{tabular}
+\end{table}
+
+Now we can define a diagonal function $g : \mathbb{N} \rightarrow \{0, 1, ..., m-1\}$ that will return us an endless sequence that is different from any of the sequences presented in the table above. There are many of such functions, but we will choose a simple one.
+\begin{center}
+$g(n) = m - 1 - f_n(n)$ 
+\end{center}
+
+Having defined such a function, we can apply it diagonally to the table and receive a sequence $g$ such as $g \neq f_n$ for any $n$. By definition, $g$ differs from any of the sequences in the table by at least one element which proves that the set of characteristic sequences $f_n$ is uncountable.
+
+However, this doesn't prove that a set of functions $F$ is also uncountable. To finish the proof, we need to make sure that there is a function $F_x$ in $F$ that has a characteristic sequence $g$. Fortunately, it can be done easily. We can define $F_x$ as follows.
+
+\begin{center}
+\(F_x(n) = g_n\)
+\end{center}
+
+Function $F_x$ has a valid signature $\mathbb{N} \rightarrow \{0, 1, ..., m-1\}$ and thus \(F_x \in V\). 
+
+We assumed that a number of functions $F_n \in F$ is countable, counted all of them and then found a function $F_x \in F$ that was not counted. This is a contradiction which means that $F$ is not countable \hfill $\square$.
+
+\end{document}

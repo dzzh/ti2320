@@ -18,25 +18,27 @@
 
 \setcounter{secnumdepth}{0}
 
-The problem of determining whether two Turing machines provide the same outputs is equivalent to the problem of finding a Turing machine that takes two Turing machines as an input, \emph{accepts} if they do provide the same outputs for all $x$ and \emph{reject} otherwise. If the latter problem is decidable, the former problem is also decidable, and vice versa.
+The problem of determining whether two Turing machines give the same results and provide the same outputs on their tapes is equivalent to the problem of finding a Turing machine that takes two Turing machines as an input, \emph{accepts} if they do give the same results and provide the same outputs for all $x$ and \emph{rejects} otherwise. If the latter problem is decidable, the former problem is also decidable, and vice versa.
 
 Let define the latter problem as follows. 
 
 \begin{center} 
-$S_{TM} = \{<M_1, M_2> |$ $M_1$, $M_2$ are TMs and $M_1(x) = M_2(x)$ for any $x$\}
+$S_{TM} = \{<M_1, M_2> |$ $M_1$, $M_2$ are TMs and $L(M_1) = L(M_2)$ and $M_1(x) = M_2(x)$ for any $x$\}
 \end{center}
 
 \textbf{Theorem.} $S_{TM}$ is undecidable.\newline
 
 \textbf{Proof idea.} We use proof by contradiction and reduce $S_{TM}$ from $EQ_{TM}$, where $EQ_{TM}$ is the problem of determining whether the languages of two TMs are the same, as defined in Sipser, theorem 5.4. If $S_{TM}$ is decidable, $EQ_{TM}$ is also decidable, which is a contradiction with theorem 5.4. 
 
-$S_{TM}$ is a more general case of $EQ_{TM}$. If $M_1$ and $M_2$ are recognized as producing the same outputs by TM $S_{TM}$, this would mean that they operate the same language (as requested by $EQ_{TM}$), and, in addition, end up with the same state of their output tapes. \newline
+$S_{TM}$ is a specific case of $EQ_{TM}$. If $M_1$ and $M_2$ are recognized as same by TM $S_{TM}$, this would mean that they operate the same language (as requested by $EQ_{TM}$). However, this does not work in the reverse direction, as some TMs can accept the same language but end up with different final states on their tapes. In this situation, these TMs will be accepted by $EQ_{TM}$, but rejected by $S_{TM}$. 
+
+To avoid the difference between $S_{TM}$ and $EQ_{TM}$, we have to modify the Turing machine that  solves $S_{TM}$ problem. We will run it not on the original TMs $M_1$ and $M_2$, but on the TMs $M_1$ and $M_{21}$, where $M_{21}$ is a Turing machine that accepts input $<M_1$, $M_2>$, runs both $M_1$ and $M_2$, copies the final word from $M_1$ into $M_2$ tape and returns the modified $M_2$ keeping its result intact, but with the state of TM $M_1$.\newline
 
 \textbf{Proof.} We assume that $S_{TM}$ is decidable and let TM $P$ decide on it. We construct TM $R$ to decide $EQ_{TM}$ as follows.\newline
 
 $R = $ "On input $<M_1, M_2>$ where $M_1$, $M_2$ are TMs:
 \begin{enumerate}
-\item Run $P$ on input $<M_1, M_2>$.
+\item Run $P$ on input $<M_1, M_{21}>$, where $M_{21}$ is defined as described above.
 \item If $P$ accepts, \emph{accept}; if $P$ rejects, \emph{reject}."
 \end{enumerate}
 

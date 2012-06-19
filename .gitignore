@@ -1,3 +1,6 @@
 TSWLatexianTemp*
 *.pdf
 *.log
+*.aux
+*.synctex.gz
+.DS_Store

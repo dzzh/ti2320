@@ -1,0 +1,53 @@
+\documentclass[a4paper, notitlepage]{article}
+\usepackage{fullpage}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\begin{document}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
+\title{TI2320 Theory of Computation, assignment 5 (red1-7)} 
+\author{Zmitser Zhaleznichenka (\#4134575, group 39)}
+\date{\today}
+\maketitle
+
+\setcounter{secnumdepth}{0}
+
+Let language  $L = \{w \in \{a,b,c\}^* | \#_a(w) = \#_b(w) = \#_c(w)\}$, where $#_u(v)$ is the number of occurrences of letter $u$ in string $v$. This language is recursive and thus is decidable by TM $R$. Let $W = \{M | M$ is a TM that accepts $L\}$. \newline
+
+\textbf{Theorem.} $W$ is undecidable. \newline
+
+\textbf{Proof.} To prove that $W$ is undecidable we will derive the reduction of $HALT_{TM}$ to $W$. This means we have to find a reduction $f$ which relates $\langle M,w \rangle \in HALT_{TM}$ to $f(\langle M,w \rangle) = \langle M'\rangle \in W$ in such a way that $\langle M,w \rangle \in HALT_{TM}$ if and only if $f(\langle M,w \rangle) = \langle M' \rangle \in W$.
+
+TM $M'$ can be defined the following way: \newline
+
+$M' = $ "\emph{On input $x$:
+\begin{enumerate}
+\item Run $M$ on input $\langle w \rangle$.
+\item Run $R$ on input $\langle x \rangle$.
+\item Return as output the output of $R$ on $\langle x \rangle$."
+\end{enumerate}}
+
+The function $f$ can be described with the following TM $F$: \newline
+
+$F = $ "\emph{On input $\langle M, w \rangle$ where $M$ is a TM and $w$ is an input string:
+\begin{enumerate}
+	\item Construct TM $M'$ as above.
+	\item Return $\langle M' \rangle$ as output."
+\end{enumerate}}
+
+From the above description of TM $F$ it follows that $f$ is a computable function (see definition 5.17). To finish the proof, we have to prove that $f$ complies with the second requirement to the reduction, namely it should be clear that $\langle M,w \rangle \in HALT_{TM}$ if and only if $f(\langle M,w \rangle) = \langle M' \rangle \in W$. The proof is the following.
+
+\begin{itemize}
+	\item If $\langle M, w \rangle \in HALT_{TM}$, then $M'$ will successfully pass the first step, because $M$ always decides on $\langle w \rangle$. Then, $M'$ will complete steps 2 and 3 and will behave like $R$. Thus, $\langle M' \rangle \in W$.
+	\item If $\langle M, w \rangle \notin HALT_{TM}$ then $M'$ during the execution of step 1 will enter the loop and thus never reach steps 2 and 3. From this it follows that for any input $M'$ will never enter the final state and thus $L(M') = \emptyset$. In this case $\langle M' \rangle \notin W$ as $L(R) \neq \emptyset$.
+\end{itemize}
+
+We have found a reduction from $HALT_{TM}$ to $W$. From theorem 5.1 we know that $HALT_{TM}$ is undecidable and can conclude that $W$ is undecidable as well by corollary 5.23, which concludes the proof. $\square$
+
+\end{document}
